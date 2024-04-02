@@ -7,9 +7,9 @@
     "test": "test"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "node --watch index.js",
-    "start": "node index.js"
+    "start": "node index.js",
+    "db:create": "psql -f ./data/init_db.sql"
   },
   "repository": {
     "type": "git",
