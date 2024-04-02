@@ -83,7 +83,7 @@ RefreshTokens.belongsTo(Users, {
 export {
   MemeComment,
   MemeLike,
-  Memes ,
+  Memes,
   MemeTag,
   RefreshTokens,
   Roles,
