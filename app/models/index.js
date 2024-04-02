@@ -8,7 +8,6 @@ import Tags from './tags.js';
 import UserBookmark from './userBookmark.js';
 import Users from './users.js';
 import sequelize from '../config/client.js';
-import MemeBookmark from './userBookmark.js';
 
 Memes.belongsToMany(Users, {
   as: 'CommentedBy',
@@ -38,13 +37,13 @@ Memes.belongsToMany(Users, {
 
 Users.belongsToMany(Memes, {
   as: 'Bookmarks',
-  through: MemeBookmark,
+  through: UserBookmark,
   foreignKey: 'usersId',
   otherKey: 'memesId',
 });
 Memes.belongsToMany(Users, {
   as: 'BookmarkedBy',
-  through: MemeBookmark,
+  through: UserBookmark,
   foreignKey: 'memesId',
   otherKey: 'usersId',
 });
@@ -61,3 +60,35 @@ Memes.belongsToMany(Tags, {
   foreignKey: 'memesId',
   otherKey: 'TagsId',
 });
+
+Users.belongsTo(Roles, {
+  foreignKey: 'rolesId',
+  as: 'Role',
+});
+
+Roles.hasMany(Users, {
+  as: 'Users',
+  foreignKey: 'rolesId',
+});
+
+Users.hasMany(RefreshTokens, {
+  as: 'RefreshTokens',
+  foreignKey: 'usersId',
+});
+RefreshTokens.belongsTo(Users, {
+  as: 'Users',
+  foreignKey: 'usersId',
+});
+
+export {
+  MemeComment,
+  MemeLike,
+  Memes ,
+  MemeTag,
+  RefreshTokens,
+  Roles,
+  Tags,
+  UserBookmark,
+  Users,
+  sequelize,
+};
