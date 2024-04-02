@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "mise en place de l'API permettant le support du projet d'Apothéose Katsumeme de la promo Katsudon",
   "main": "index.js",
+  "type": "module",
   "directories": {
     "test": "test"
   },
