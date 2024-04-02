@@ -80,6 +80,16 @@ RefreshTokens.belongsTo(Users, {
   foreignKey: 'usersId',
 });
 
+Users.hasMany(Memes, {
+  as: 'Author',
+  foreignKey: 'authorId',
+});
+
+Memes.belongsTo(Users, {
+  as: 'CreatedBy',
+  foreignKey: 'authorId',
+});
+
 export {
   MemeComment,
   MemeLike,
