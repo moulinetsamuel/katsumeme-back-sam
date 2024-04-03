@@ -8,51 +8,90 @@ datasource db {
 }
 
 model User {
-  id        Int    @id @default(autoincrement())
-  firstname String
-  lastname  String
-  nickname  String @unique
-  avatarUrl String
-  email     String @unique
-  password  String
+  id            Int               @id @default(autoincrement())
+  firstname     String
+  lastname      String
+  nickname      String            @unique
+  avatarUrl     String
+  email         String            @unique
+  password      String
+  role          Role              @relation(fields: [roleId], references: [id])
+  roleId        Int
+  refreshTokens RefreshToken[]
+  memes         Meme[]
+  comments      MemeHasComment[]
+  like          MemeHasLike[]
+  bookmarks     UserHasBookmark[]
 }
 
 model Role {
-  id   Int    @id @default(autoincrement())
-  name String @unique
+  id    Int    @id @default(autoincrement())
+  name  String @unique
+  users User[]
 }
 
 model Tag {
-  id   Int    @id @default(autoincrement())
-  name String @unique
+  id    Int          @id @default(autoincrement())
+  name  String       @unique
+  memes MemeHasTag[]
 }
 
 model Meme {
-  id       Int    @id @default(autoincrement())
-  imageUrl String @unique
-  title    String
+  id           Int               @id @default(autoincrement())
+  imageUrl     String            @unique
+  title        String
+  author       User              @relation(fields: [authorId], references: [id])
+  authorId     Int
+  commentedBy  MemeHasComment[]
+  likedBy      MemeHasLike[]
+  bookmarkedBy UserHasBookmark[]
+  tags         MemeHasTag[]
 }
 
 model MemeHasComment {
   id      Int    @id @default(autoincrement())
   comment String
+  users   User   @relation(fields: [userId], references: [id])
+  userId  Int
+  memes   Meme   @relation(fields: [memeId], references: [id])
+  memeId  Int
 }
 
 model MemeHasLike {
-  id   Int     @id @default(autoincrement())
-  like Boolean @default(false)
+  id     Int     @id @default(autoincrement())
+  like   Boolean @default(false)
+  users  User    @relation(fields: [userId], references: [id])
+  userId Int
+  memes  Meme    @relation(fields: [memeId], references: [id])
+  memeId Int
+
+  @@unique([userId, memeId])
 }
 
 model MemeHasTag {
-  id Int @id @default(autoincrement())
+  id     Int  @id @default(autoincrement())
+  tags   Tag  @relation(fields: [tagId], references: [id])
+  tagId  Int
+  memes  Meme @relation(fields: [memeId], references: [id])
+  memeId Int
+
+  @@unique([tagId, memeId])
 }
 
 model UserHasBookmark {
-  id Int @id @default(autoincrement())
+  id     Int  @id @default(autoincrement())
+  users  User @relation(fields: [userId], references: [id])
+  userId Int
+  memes  Meme @relation(fields: [memeId], references: [id])
+  memeId Int
+
+  @@unique([userId, memeId])
 }
 
 model RefreshToken {
   id        Int      @id @default(autoincrement())
   token     String   @unique
   expiresAt DateTime
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int
 }
