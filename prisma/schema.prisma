@@ -1,0 +1,58 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int    @id @default(autoincrement())
+  firstname String
+  lastname  String
+  nickname  String @unique
+  avatarUrl String
+  email     String @unique
+  password  String
+}
+
+model Role {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+}
+
+model Tag {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+}
+
+model Meme {
+  id       Int    @id @default(autoincrement())
+  imageUrl String @unique
+  title    String
+}
+
+model MemeHasComment {
+  id      Int    @id @default(autoincrement())
+  comment String
+}
+
+model MemeHasLike {
+  id   Int     @id @default(autoincrement())
+  like Boolean @default(false)
+}
+
+model MemeHasTag {
+  id Int @id @default(autoincrement())
+}
+
+model UserHasBookmark {
+  id Int @id @default(autoincrement())
+}
+
+model RefreshToken {
+  id        Int      @id @default(autoincrement())
+  token     String   @unique
+  expiresAt DateTime
+}
