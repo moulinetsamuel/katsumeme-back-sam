@@ -5,3 +5,5 @@ npm install
 ```
 
 lancer le script npm db:create
+
+npx prisma migrate deploy
