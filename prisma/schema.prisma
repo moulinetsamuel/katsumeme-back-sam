@@ -31,9 +31,9 @@ model Role {
 }
 
 model Tag {
-  id    Int          @id @default(autoincrement())
-  name  String       @unique
-  memes MemeHasTag[]
+  id    Int            @id @default(autoincrement())
+  name  String         @unique
+  memes MemesHasTags[]
 }
 
 model Meme {
@@ -45,7 +45,7 @@ model Meme {
   commentedBy  MemeHasComment[]
   likedBy      MemeHasLike[]
   bookmarkedBy UserHasBookmark[]
-  tags         MemeHasTag[]
+  tags         MemesHasTags[]
 }
 
 model MemeHasComment {
@@ -58,34 +58,31 @@ model MemeHasComment {
 }
 
 model MemeHasLike {
-  id     Int     @id @default(autoincrement())
   like   Boolean @default(false)
   users  User    @relation(fields: [userId], references: [id])
   userId Int
   memes  Meme    @relation(fields: [memeId], references: [id])
   memeId Int
 
-  @@unique([userId, memeId])
+  @@id([userId, memeId])
 }
 
-model MemeHasTag {
-  id     Int  @id @default(autoincrement())
+model MemesHasTags {
   tags   Tag  @relation(fields: [tagId], references: [id])
   tagId  Int
   memes  Meme @relation(fields: [memeId], references: [id])
   memeId Int
 
-  @@unique([tagId, memeId])
+  @@id([tagId, memeId])
 }
 
 model UserHasBookmark {
-  id     Int  @id @default(autoincrement())
   users  User @relation(fields: [userId], references: [id])
   userId Int
   memes  Meme @relation(fields: [memeId], references: [id])
   memeId Int
 
-  @@unique([userId, memeId])
+  @@id([userId, memeId])
 }
 
 model RefreshToken {

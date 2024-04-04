@@ -1,7 +1,6 @@
--- SQLBook: Code
 -- CreateTable
 CREATE TABLE "User" (
-    "id" SERIAL NOT NULL,
+    "id" INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     "firstname" TEXT NOT NULL,
     "lastname" TEXT NOT NULL,
     "nickname" TEXT NOT NULL,
@@ -9,82 +8,76 @@ CREATE TABLE "User" (
     "email" TEXT NOT NULL,
     "password" TEXT NOT NULL,
     "roleId" INTEGER NOT NULL,
-
-    CONSTRAINT "User_pkey" PRIMARY KEY ("id")
+    "created_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
 );
 
 -- CreateTable
 CREATE TABLE "Role" (
-    "id" SERIAL NOT NULL,
+    "id" INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     "name" TEXT NOT NULL,
-
-    CONSTRAINT "Role_pkey" PRIMARY KEY ("id")
+    "created_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
 );
 
 -- CreateTable
 CREATE TABLE "Tag" (
-    "id" SERIAL NOT NULL,
+    "id" INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     "name" TEXT NOT NULL,
-
-    CONSTRAINT "Tag_pkey" PRIMARY KEY ("id")
+    "created_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
 );
 
 -- CreateTable
 CREATE TABLE "Meme" (
-    "id" SERIAL NOT NULL,
+    "id" INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     "imageUrl" TEXT NOT NULL,
     "title" TEXT NOT NULL,
     "authorId" INTEGER NOT NULL,
-
-    CONSTRAINT "Meme_pkey" PRIMARY KEY ("id")
+    "created_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
 );
 
 -- CreateTable
 CREATE TABLE "MemeHasComment" (
-    "id" SERIAL NOT NULL,
+    "id" INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     "comment" TEXT NOT NULL,
     "userId" INTEGER NOT NULL,
     "memeId" INTEGER NOT NULL,
-
-    CONSTRAINT "MemeHasComment_pkey" PRIMARY KEY ("id")
+    "created_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
 );
 
 -- CreateTable
 CREATE TABLE "MemeHasLike" (
-    "id" SERIAL NOT NULL,
     "like" BOOLEAN NOT NULL DEFAULT false,
     "userId" INTEGER NOT NULL,
     "memeId" INTEGER NOT NULL,
+    "created_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
-    CONSTRAINT "MemeHasLike_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "MemeHasLike_pkey" PRIMARY KEY ("userId","memeId")
 );
 
 -- CreateTable
-CREATE TABLE "MemeHasTag" (
-    "id" SERIAL NOT NULL,
+CREATE TABLE "MemesHasTags" (
     "tagId" INTEGER NOT NULL,
     "memeId" INTEGER NOT NULL,
+    "created_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
-    CONSTRAINT "MemeHasTag_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "MemesHasTags_pkey" PRIMARY KEY ("tagId","memeId")
 );
 
 -- CreateTable
 CREATE TABLE "UserHasBookmark" (
-    "id" SERIAL NOT NULL,
     "userId" INTEGER NOT NULL,
     "memeId" INTEGER NOT NULL,
+    "created_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
-    CONSTRAINT "UserHasBookmark_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "UserHasBookmark_pkey" PRIMARY KEY ("userId","memeId")
 );
 
 -- CreateTable
 CREATE TABLE "RefreshToken" (
-    "id" SERIAL NOT NULL,
+    "id" INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     "token" TEXT NOT NULL,
     "expiresAt" TIMESTAMP(3) NOT NULL,
     "userId" INTEGER NOT NULL,
-
-    CONSTRAINT "RefreshToken_pkey" PRIMARY KEY ("id")
+    "created_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
 );
 
 -- CreateIndex
@@ -101,15 +94,6 @@ CREATE UNIQUE INDEX "Tag_name_key" ON "Tag"("name");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Meme_imageUrl_key" ON "Meme"("imageUrl");
-
--- CreateIndex
-CREATE UNIQUE INDEX "MemeHasLike_userId_memeId_key" ON "MemeHasLike"("userId", "memeId");
-
--- CreateIndex
-CREATE UNIQUE INDEX "MemeHasTag_tagId_memeId_key" ON "MemeHasTag"("tagId", "memeId");
-
--- CreateIndex
-CREATE UNIQUE INDEX "UserHasBookmark_userId_memeId_key" ON "UserHasBookmark"("userId", "memeId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "RefreshToken_token_key" ON "RefreshToken"("token");
@@ -133,10 +117,10 @@ ALTER TABLE "MemeHasLike" ADD CONSTRAINT "MemeHasLike_userId_fkey" FOREIGN KEY (
 ALTER TABLE "MemeHasLike" ADD CONSTRAINT "MemeHasLike_memeId_fkey" FOREIGN KEY ("memeId") REFERENCES "Meme"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "MemeHasTag" ADD CONSTRAINT "MemeHasTag_tagId_fkey" FOREIGN KEY ("tagId") REFERENCES "Tag"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "MemesHasTags" ADD CONSTRAINT "MemesHasTags_tagId_fkey" FOREIGN KEY ("tagId") REFERENCES "Tag"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "MemeHasTag" ADD CONSTRAINT "MemeHasTag_memeId_fkey" FOREIGN KEY ("memeId") REFERENCES "Meme"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "MemesHasTags" ADD CONSTRAINT "MemesHasTags_memeId_fkey" FOREIGN KEY ("memeId") REFERENCES "Meme"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "UserHasBookmark" ADD CONSTRAINT "UserHasBookmark_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
