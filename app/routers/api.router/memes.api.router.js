@@ -6,8 +6,8 @@ const router = express.Router();
 
 router.get('/', tryCatcher(memesController.getAll));
 
-router.get('/:id', tryCatcher(memesController.getOne));
+// router.get('/:id', tryCatcher(memesController.getOne));
 
-router.delete('/:id', tryCatcher(memesController.delete));
+// router.delete('/:id', tryCatcher(memesController.delete));
 
 export default router;
