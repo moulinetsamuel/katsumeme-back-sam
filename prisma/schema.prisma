@@ -58,7 +58,7 @@ model MemeHasComment {
 }
 
 model MemeHasLike {
-  like   Boolean @default(false)
+  like   Boolean 
   users  User    @relation(fields: [userId], references: [id])
   userId Int
   memes  Meme    @relation(fields: [memeId], references: [id])
