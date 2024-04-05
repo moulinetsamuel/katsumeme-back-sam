@@ -7,88 +7,97 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id            Int               @id @default(autoincrement())
-  firstname     String
-  lastname      String
-  nickname      String            @unique
-  avatarUrl     String
-  email         String            @unique
-  password      String
-  role          Role              @relation(fields: [roleId], references: [id])
-  roleId        Int
-  refreshTokens RefreshToken[]
-  memes         Meme[]
-  comments      MemeHasComment[]
-  like          MemeHasLike[]
-  bookmarks     UserHasBookmark[]
+model user {
+  id             Int                 @id @default(autoincrement())
+  firstname      String
+  lastname       String
+  nickname       String              @unique
+  avatar_url     String
+  email          String              @unique
+  password       String
+  role_id        Int
+  created_at     DateTime            @default(now()) @db.Timestamptz(6)
+  memes          meme[]
+  comments       meme_has_comment[]
+  like           meme_has_like[]
+  refresh_tokens refresh_token[]
+  role           role                @relation(fields: [role_id], references: [id])
+  bookmarks      user_has_bookmark[]
 }
 
-model Role {
-  id    Int    @id @default(autoincrement())
-  name  String @unique
-  users User[]
+model role {
+  id         Int      @id @default(autoincrement())
+  name       String   @unique
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+  users      user[]
 }
 
-model Tag {
-  id    Int            @id @default(autoincrement())
-  name  String         @unique
-  memes MemesHasTags[]
+model tag {
+  id         Int              @id @default(autoincrement())
+  name       String           @unique
+  created_at DateTime         @default(now()) @db.Timestamptz(6)
+  memes      memes_has_tags[]
 }
 
-model Meme {
-  id           Int               @id @default(autoincrement())
-  imageUrl     String            @unique
-  title        String
-  author       User              @relation(fields: [authorId], references: [id])
-  authorId     Int
-  commentedBy  MemeHasComment[]
-  likedBy      MemeHasLike[]
-  bookmarkedBy UserHasBookmark[]
-  tags         MemesHasTags[]
+model meme {
+  id            Int                 @id @default(autoincrement())
+  image_url     String              @unique
+  title         String
+  author_id     Int
+  created_at    DateTime            @default(now()) @db.Timestamptz(6)
+  author        user                @relation(fields: [author_id], references: [id])
+  commented_by  meme_has_comment[]
+  liked_by      meme_has_like[]
+  tags          memes_has_tags[]
+  bookmarked_by user_has_bookmark[]
 }
 
-model MemeHasComment {
-  id      Int    @id @default(autoincrement())
-  comment String
-  users   User   @relation(fields: [userId], references: [id])
-  userId  Int
-  memes   Meme   @relation(fields: [memeId], references: [id])
-  memeId  Int
+model meme_has_comment {
+  id         Int      @id @default(autoincrement())
+  comment    String
+  user_id    Int
+  meme_id    Int
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+  memes      meme     @relation(fields: [meme_id], references: [id])
+  users      user     @relation(fields: [user_id], references: [id])
 }
 
-model MemeHasLike {
-  like   Boolean 
-  users  User    @relation(fields: [userId], references: [id])
-  userId Int
-  memes  Meme    @relation(fields: [memeId], references: [id])
-  memeId Int
+model meme_has_like {
+  like       Boolean
+  user_id    Int
+  meme_id    Int
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+  memes      meme     @relation(fields: [meme_id], references: [id])
+  users      user     @relation(fields: [user_id], references: [id])
 
-  @@id([userId, memeId])
+  @@id([user_id, meme_id])
 }
 
-model MemesHasTags {
-  tags   Tag  @relation(fields: [tagId], references: [id])
-  tagId  Int
-  memes  Meme @relation(fields: [memeId], references: [id])
-  memeId Int
+model memes_has_tags {
+  tag_id     Int
+  meme_id    Int
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+  memes      meme     @relation(fields: [meme_id], references: [id])
+  tags       tag      @relation(fields: [tag_id], references: [id])
 
-  @@id([tagId, memeId])
+  @@id([tag_id, meme_id])
 }
 
-model UserHasBookmark {
-  users  User @relation(fields: [userId], references: [id])
-  userId Int
-  memes  Meme @relation(fields: [memeId], references: [id])
-  memeId Int
+model user_has_bookmark {
+  user_id    Int
+  meme_id    Int
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+  memes      meme     @relation(fields: [meme_id], references: [id])
+  users      user     @relation(fields: [user_id], references: [id])
 
-  @@id([userId, memeId])
+  @@id([user_id, meme_id])
 }
 
-model RefreshToken {
-  id        Int      @id @default(autoincrement())
-  token     String   @unique
-  expiresAt DateTime
-  user      User     @relation(fields: [userId], references: [id])
-  userId    Int
+model refresh_token {
+  id         Int      @id @default(autoincrement())
+  token      String   @unique
+  expires_at DateTime
+  user_id    Int
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+  user       user     @relation(fields: [user_id], references: [id])
 }
