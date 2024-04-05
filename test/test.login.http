@@ -9,3 +9,15 @@ Content-Type: application/json
     "password": "password"
 }
 
+### POST test create User
+POST {{endpoint}}/users
+Content-Type: application/json
+
+{
+    "firstname": "chuck",
+    "lastname": "norris",
+    "nickname": "The_Boss",
+    "email": "le_boss@tropfort.com",
+    "password": "jackychan",
+    "confirm_password": "jackychan"
+}

@@ -4,10 +4,10 @@ CREATE TABLE "user" (
     "firstname" TEXT NOT NULL,
     "lastname" TEXT NOT NULL,
     "nickname" TEXT NOT NULL,
-    "avatar_url" TEXT NOT NULL,
+    "avatar_url" TEXT,
     "email" TEXT NOT NULL,
     "password" TEXT NOT NULL,
-    "role_id" INTEGER NOT NULL,
+    "role_id" INTEGER NOT NULL DEFAULT 2,
     "created_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
