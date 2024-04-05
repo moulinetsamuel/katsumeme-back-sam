@@ -48,7 +48,8 @@ const memesController = {
       orderBy: {
         id: 'desc',
       },
-      include: {
+      select: {
+        id: true,
         _count: {
           select: {
             liked_by: {
@@ -61,44 +62,51 @@ const memesController = {
 
     const dislikeNumber = countDislikes.map((meme) => meme._count);
 
-    const allMemesWithTagsLikesAndDislikes = allMemesWithTagsAndLikes.map((meme, index) => ({
+    const memesCompleted = allMemesWithTagsAndLikes.map((meme, index) => ({
       ...meme,
       dislikeCount: dislikeNumber[index],
     }));
 
     const activeUserId = Number(req.query.user_id);
+    if (activeUserId) {
+      const memesCompletedWithUser = await Promise.all(memesCompleted.map(async (meme) => {
+        const memeId = meme.id;
 
-    const memesCompleted = await Promise.all(allMemesWithTagsLikesAndDislikes.map(async (meme) => {
-      const memeId = meme.id;
+        // Vérifiez si le mème en question est bookmarké par l'utilisateur actif
+        const memeIsBookmarked = await prisma.user_has_bookmark.findFirst({
+          where: {
+            user_id: activeUserId, // L'ID de l'utilisateur actif
+            meme_id: memeId, // L'ID du mème
+          },
+        });
 
-      // Vérifiez si le mème en question est bookmarké par l'utilisateur actif
-      const memeIsBookmarked = await prisma.user_has_bookmark.findFirst({
-        where: {
-          user_id: activeUserId, // L'ID de l'utilisateur actif
-          meme_id: memeId, // L'ID du mème
-        },
-      });
+        // Vérifiez si l'utilisateur a liké ce mème
+        const likedByUser = await prisma.meme_has_like.findFirst({
+          where: {
+            user_id: activeUserId, // L'ID de l'utilisateur actif
+            meme_id: memeId, // L'ID du mème
+          },
+        });
 
-      // Vérifiez si l'utilisateur a liké ce mème
-      const likedByUser = await prisma.meme_has_like.findFirst({
-        where: {
-          user_id: activeUserId, // L'ID de l'utilisateur actif
-          meme_id: memeId, // L'ID du mème
-        },
-      });
-
-      return {
-        ...meme,
-        isBookmarked: !!memeIsBookmarked, // Convertit en booléen
-        likedByUser: likedByUser ? likedByUser.like : null, // null si l'utilisateur n'a pas encore donné de valeur
-      };
-    }));
+        let isliked;
+        if (likedByUser !== null) {
+          isliked = likedByUser.like;
+        }
+        return {
+          ...meme,
+          isBookmarked: !!memeIsBookmarked, // Convertit en booléen
+          isliked,
+        };
+      }));
+      cpretty(memesCompletedWithUser);
+      return res.status(200).json(memesCompletedWithUser);
+    }
 
     // cpretty(allMemesWithTagsLikesAndDislikes);
     // cpretty(allCompleteMemes);
 
-    cpretty(memesCompleted);
-    res.status(200).send(memesCompleted);
+    // cpretty(memesCompleted);
+    return res.status(200).json(memesCompleted);
   },
 };
 

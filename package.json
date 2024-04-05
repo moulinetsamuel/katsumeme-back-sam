@@ -12,7 +12,8 @@
     "start": "node index.js",
     "db:create": "psql -f ./data/init_db.sql",
     "db:deploy": "npx prisma migrate deploy",
-    "db:seed": "psql -d katsumeme -f ./data/seed.sql"
+    "db:seed": "psql -d katsumeme -f ./data/seed.sql",
+    "prisma:generate": "npx prisma generate"
   },
   "repository": {
     "type": "git",
