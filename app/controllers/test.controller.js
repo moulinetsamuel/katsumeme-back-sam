@@ -1,5 +1,5 @@
-const roadTest = (req, res) => {
-  res.send('Hello World');
+export default {
+  roadTest(req, res) {
+    res.status(200).json({ message: 'Test route' });
+  },
 };
-
-export default roadTest;

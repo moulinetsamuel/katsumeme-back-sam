@@ -1,10 +1,8 @@
 import express from 'express';
-import authRouter from './auth.api.router.js';
-import testController from '../controllers/test.controller.js';
+import apiRouter from './api/index.api.router.js';
 
 const router = express.Router();
 
-router.get('/test', testController);
-router.use('/auth', authRouter);
+router.use('/api', apiRouter);
 
 export default router;
