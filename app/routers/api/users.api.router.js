@@ -6,6 +6,6 @@ import signupSchema from '../../schemas/users.schema/post.signup.js';
 
 const router = express.Router();
 
-router.post('/signup', zodValidator(signupSchema), tryCatcher(usersController.signup));
+router.post('/users', zodValidator(signupSchema), tryCatcher(usersController.signup));
 
 export default router;
