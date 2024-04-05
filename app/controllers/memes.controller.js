@@ -98,13 +98,14 @@ const memesController = {
           isliked,
         };
       }));
+      cpretty(memesCompletedWithUser);
       return res.status(200).json(memesCompletedWithUser);
     }
 
     // cpretty(allMemesWithTagsLikesAndDislikes);
     // cpretty(allCompleteMemes);
 
-    cpretty(memesCompleted);
+    // cpretty(memesCompleted);
     return res.status(200).json(memesCompleted);
   },
 };
