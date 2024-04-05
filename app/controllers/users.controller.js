@@ -10,7 +10,7 @@ export default {
     } = req.body;
     const hashedPassword = await bcrypt.hash(password, parseInt(process.env.NB_OF_SALT_ROUNDs, 10));
 
-    const newUser = await prisma.user.create({
+    await prisma.user.create({
       data: {
         firstname,
         lastname,
@@ -20,7 +20,6 @@ export default {
       },
 
     });
-    console.log(newUser);
 
     res.status(201).json({ message: 'Your account has been created' });
   },

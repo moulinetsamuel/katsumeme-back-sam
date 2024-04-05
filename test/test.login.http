@@ -5,8 +5,8 @@ POST {{endpoint}}/auth/login
 Content-Type: application/json
 
 {
-    "email": "john@example.com",
-    "password": "password"
+    "email": "le_boss@tropfort.com",
+    "password": "jackychan"
 }
 
 ### POST test create User
