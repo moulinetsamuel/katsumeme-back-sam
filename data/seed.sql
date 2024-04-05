@@ -4,9 +4,9 @@ INSERT INTO "role" ("name") VALUES
   ('Admin'),
   ('User');
 
-INSERT INTO "user" ("firstname", "lastname", "nickname", "avatar_url", "email", "password", "role_id") VALUES
-  ('John', 'Doe', 'johndoe', 'https://www.picgifs.com/avatars/cartoons/happy-tree-friends/avatars-happy-tree-friends-422505.gif', 'john@example.com', 'hashed_password_1', 1),
-  ('Jane', 'Smith', 'janesmith', 'https://www.picgifs.com/avatars/cartoons/happy-tree-friends/avatars-happy-tree-friends-710172.gif', 'jane@example.com', 'hashed_password_2', 2);
+INSERT INTO "user" ("firstname", "lastname", "nickname", "avatar_url", "email", "password") VALUES
+  ('John', 'Doe', 'johndoe', 'https://www.picgifs.com/avatars/cartoons/happy-tree-friends/avatars-happy-tree-friends-422505.gif', 'john@example.com', 'hashed_password_1'),
+  ('Jane', 'Smith', 'janesmith', 'https://www.picgifs.com/avatars/cartoons/happy-tree-friends/avatars-happy-tree-friends-710172.gif', 'jane@example.com', 'hashed_password_2');
 
 INSERT INTO "tag" ("name") VALUES
   ('Funny'),
