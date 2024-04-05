@@ -10,18 +10,18 @@ export default async (user) => {
     },
     process.env.JWT_SECRET,
     {
-      expiresIn: process.env.JWT_EXPIRES_IN,
+      expiresIn: process.env.JWT_EXPIRES_IN / 1000,
       subject: user.id.toString(),
     },
   );
-
+  console.log('test', new Date(Date.now() + parseInt(process.env.JWT_REFRESH_EXPIRES_IN, 10)));
   const refreshToken = jwt.sign(
     {
       role: user.role,
     },
     process.env.JWT_REFRESH_SECRET,
     {
-      expiresIn: new Date(Date.now() + parseInt(process.env.JWT_REFRESH_EXPIRES_IN, 10)),
+      expiresIn: process.env.JWT_REFRESH_EXPIRES_IN / 1000,
       subject: user.id.toString(),
     },
   );
