@@ -1,8 +1,8 @@
 import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
-const pretty = (obj) => JSON.stringify(obj, null, 2);
-const cpretty = (obj) => console.log(pretty(obj));
+// const pretty = (obj) => JSON.stringify(obj, null, 2);
+// const cpretty = (obj) => console.log(pretty(obj));
 
 const memesController = {
   async getAll(req, res) {
@@ -98,7 +98,7 @@ const memesController = {
           isliked,
         };
       }));
-      cpretty(memesCompletedWithUser);
+      // cpretty(memesCompletedWithUser);
       return res.status(200).json(memesCompletedWithUser);
     }
 
