@@ -1,4 +1,5 @@
-@endpoint=http://localhost:{{$dotenv PORT}}/api
+# @endpoint=http://localhost:{{$dotenv PORT}}/api
+@endpoint=https://katsumeme-8c128449f9bf.herokuapp.com/api
 
 ### POST test login
 POST {{endpoint}}/auth/login
