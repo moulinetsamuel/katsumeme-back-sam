@@ -3,7 +3,7 @@ export default (err, _, res, __) => {
   // 0 - Simple message
   // 1 - Message without error
   // 2 - All information
-  const debugLevel = 2;
+  const debugLevel = 0;
   let message = {};
 
   switch (debugLevel) {

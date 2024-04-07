@@ -1,0 +1,4 @@
+@endpoint=http://localhost:{{$dotenv PORT}}/api
+
+### GET route protected by JWT /test
+GET {{endpoint}}/test

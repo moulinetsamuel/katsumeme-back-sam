@@ -4,19 +4,21 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 export default async (req, res, next) => {
-  const authorizationHeader = req.headers.authorization;
-
-  if (!authorizationHeader || !authorizationHeader.startsWith('Bearer ')) {
-    return res.status(401).json({ message: 'Invalid authorization header' });
-  }
-
-  const accessToken = authorizationHeader.split(' ')[1];
-
-  if (!accessToken) {
-    return res.status(401).json({ message: 'Token not found' });
-  }
-
   try {
+    const authorizationHeader = req.headers.authorization;
+
+    if (!authorizationHeader || !authorizationHeader.startsWith('Bearer ')) {
+      const error = new Error('Invalid authorization header');
+      error.status = 401;
+      throw error;
+    }
+
+    const accessToken = authorizationHeader.split(' ')[1];
+
+    if (!accessToken) {
+      throw new Error('Access token not found', 401);
+    }
+
     const decoded = jwt.verify(accessToken, process.env.JWT_SECRET);
 
     const userId = decoded.sub;
@@ -28,13 +30,15 @@ export default async (req, res, next) => {
     });
 
     if (!user) {
-      return res.status(401).json({ message: 'User not found' });
+      const error = new Error('User not found');
+      error.status = 401;
+      throw error;
     }
 
     req.user = user;
 
-    return next();
+    next();
   } catch (error) {
-    return res.status(401).json({ message: 'Invalid token' });
+    next(error);
   }
 };

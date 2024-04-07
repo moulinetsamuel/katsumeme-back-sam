@@ -3,6 +3,6 @@ export default (schema) => async (req, res, next) => {
     await schema.parseAsync(req.body);
     next();
   } catch (error) {
-    res.status(400).json({ error: error.errors });
+    next(error);
   }
 };
