@@ -7,7 +7,7 @@ Content-Type: application/json
 
 {
     "email": "le_boss@tropfort.com",
-    "password": "jackychan"
+    "password": "jaackychan"
 }
 
 ### GET route protected by JWT /test

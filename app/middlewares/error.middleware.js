@@ -2,11 +2,12 @@
 export default (err, req, res, next) => {
   // 0 - Simple message
   // 1 - Entire error and status
+
   const debugLevel = process.env.DEBUG_LEVEL || 0;
   let message = {};
 
   switch (debugLevel) {
-    case 0:
+    case '0':
       if (err.name === 'AuthError') {
         message = { message: 'Unauthorized' };
       } else if (err.name === 'TokenExpiredError' || err.name === 'JsonWebTokenError') {
@@ -19,7 +20,7 @@ export default (err, req, res, next) => {
         message = { message: 'Je suis pas gérée' };
       }
       break;
-    case 1:
+    case '1':
       message = { message: err.message.replace(/\n/g, ''), error: err };
       console.log(err);
       break;

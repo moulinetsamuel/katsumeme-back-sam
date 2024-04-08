@@ -1,5 +1,6 @@
 import authenticate from '../utils/authenticate.js';
 import generateTokens from '../utils/generateTokens.js';
+import { AuthError } from '../error/api.error.js';
 
 export default {
   async login(req, res) {
@@ -8,7 +9,7 @@ export default {
     const user = await authenticate(email, password);
 
     if (!user) {
-      return res.status(401).json({ message: 'Invalid credentials' });
+      throw new AuthError('Invalid email or password', 401);
     }
 
     const { accessToken, refreshToken } = await generateTokens(user);
