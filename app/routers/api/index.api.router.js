@@ -5,7 +5,6 @@ import memesRouter from './memes.api.router.js';
 import usersRouter from './users.api.router.js';
 import auth from '../../middlewares/auth.middleware.js';
 
-
 const router = express.Router();
 
 router.use('/test', auth, testRouter);

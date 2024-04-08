@@ -1,8 +1,12 @@
+import { fromZodError } from 'zod-validation-error';
+
 export default (schema) => async (req, res, next) => {
   try {
     await schema.parseAsync(req.body);
     next();
   } catch (error) {
-    res.status(400).json({ error: error.errors });
+    const zodError = fromZodError(error);
+    zodError.status = 400;
+    next(zodError);
   }
 };

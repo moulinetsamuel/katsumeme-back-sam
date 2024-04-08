@@ -14,7 +14,7 @@ export default async (user) => {
       subject: user.id.toString(),
     },
   );
-  console.log('test', new Date(Date.now() + parseInt(process.env.JWT_REFRESH_EXPIRES_IN, 10)));
+
   const refreshToken = jwt.sign(
     {
       role: user.role,

@@ -1,25 +1,28 @@
 import jwt from 'jsonwebtoken';
 import { PrismaClient } from '@prisma/client';
+import { AuthError } from '../error/api.error.js';
 
-const prisma = new PrismaClient();
+const prisma = new PrismaClient({
+  errorFormat: 'minimal',
+});
 
 export default async (req, res, next) => {
-  const authorizationHeader = req.headers.authorization;
-
-  if (!authorizationHeader || !authorizationHeader.startsWith('Bearer ')) {
-    return res.status(401).json({ message: 'Invalid authorization header' });
-  }
-
-  const accessToken = authorizationHeader.split(' ')[1];
-
-  if (!accessToken) {
-    return res.status(401).json({ message: 'Token not found' });
-  }
-
   try {
+    const authorizationHeader = req.headers.authorization;
+
+    if (!authorizationHeader || !authorizationHeader.startsWith('Bearer')) {
+      throw new AuthError('Authorization header not found', 401);
+    }
+
+    const accessToken = authorizationHeader.split(' ')[1];
+
+    if (!accessToken) {
+      throw new AuthError('Access token not found', 401);
+    }
+
     const decoded = jwt.verify(accessToken, process.env.JWT_SECRET);
 
-    const userId = decoded.sub;
+    const userId = Number(decoded.sub);
 
     const user = await prisma.user.findUnique({
       where: {
@@ -28,13 +31,16 @@ export default async (req, res, next) => {
     });
 
     if (!user) {
-      return res.status(401).json({ message: 'User not found' });
+      throw new AuthError('User not found', 401);
     }
 
     req.user = user;
 
-    return next();
+    next();
   } catch (error) {
-    return res.status(401).json({ message: 'Invalid token' });
+    if (error.name === 'TokenExpiredError' || error.name === 'JsonWebTokenError') {
+      error.status = 401;
+    }
+    next(error);
   }
 };

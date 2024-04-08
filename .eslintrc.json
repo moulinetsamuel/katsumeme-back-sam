@@ -12,6 +12,8 @@
         "no-console" : "off",
         "import/extensions" :"off",
         "no-underscore-dangle" : "off",
-        "max-len": "off"
+        "max-len": "off",
+        "max-classes-per-file": "off",
+        "no-param-reassign": "off"
     }
 }
