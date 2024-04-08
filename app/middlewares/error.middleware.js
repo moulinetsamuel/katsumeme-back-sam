@@ -2,12 +2,11 @@
 export default (err, req, res, next) => {
   // 0 - Simple message
   // 1 - Entire error and status
-  const debugLevel = 1;
+  const debugLevel = process.env.DEBUG_LEVEL || 0;
   let message = {};
 
   switch (debugLevel) {
     case 0:
-      console.log(err.name);
       if (err.name === 'AuthError') {
         message = { message: 'Unauthorized' };
       } else if (err.name === 'TokenExpiredError' || err.name === 'JsonWebTokenError') {
