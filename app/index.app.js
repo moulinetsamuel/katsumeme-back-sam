@@ -5,6 +5,7 @@ import helmet from 'helmet';
 import cookieParser from 'cookie-parser';
 import router from './routers/index.router.js';
 import errorMiddleware from './middlewares/error.middleware.js';
+import multerUpload from './middlewares/multer.middleware.js';
 
 const app = express();
 
@@ -15,6 +16,8 @@ app.use(cookieParser());
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.use(multerUpload);
 
 app.use(router);
 app.use(errorMiddleware);
