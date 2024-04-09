@@ -106,12 +106,22 @@ const memesController = {
 
   async uploadMeme(req, res) {
     const uploadedFile = req.file;
-    const meme = await prisma.meme.create({
+    const { userId, title, tags } = req.body;
+
+    await prisma.meme.create({
       data: {
-        image_url: uploadedFile.path,
+        image_url: uploadedFile,
+        author_id: userId,
+        title,
+        tags: {
+          connectOrCreate: tags.map((tag) => ({
+            where: { name: tag },
+            create: { name: tag },
+          })),
+        },
       },
     });
-    res.status(200).json({ message: 'Fichier importé avec succès', meme });
+    res.status(200).json({ message: 'Fichier importé avec succès' });
   },
 
 };

@@ -1,16 +1,27 @@
 import multer from 'multer';
-import path from 'path';
 
-const storage = multer.diskStorage({
-  destination: 'uploads/memes',
+const memeStorage = multer.diskStorage({
+  destination(req, file, cb) {
+    cb(null, './public/upload/memes');
+  },
 
-  filename: (req, file) => {
+  filename(req, file, cb) {
     const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1E9)}`;
-    const extname = path.extname(file.originalname);
-    return uniqueSuffix + extname;
+    cb(null, `meme-${uniqueSuffix}.png`);
   },
 });
 
-const multerUpload = multer({ storage });
+const avatarStorage = multer.diskStorage({
+  destination(req, file, cb) {
+    cb(null, './public/upload/avatars');
+  },
+  filename(req, file, cb) {
+    const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1E9)}`;
+    cb(null, `avatar-${uniqueSuffix}.png`);
+  },
+});
 
-export default multerUpload;
+const memeUpload = multer({ memeStorage });
+const avatarUpload = multer({ avatarStorage });
+
+export { memeUpload, avatarUpload };
