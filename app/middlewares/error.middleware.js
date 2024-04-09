@@ -3,7 +3,7 @@ export default (err, req, res, next) => {
   // 0 - Simple message
   // 1 - Entire error and status
 
-  const debugLevel = process.env.DEBUG_LEVEL || 0;
+  const debugLevel = process.env.DEBUG_LEVEL || '0';
   let message = {};
 
   switch (debugLevel) {
