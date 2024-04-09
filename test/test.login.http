@@ -18,7 +18,7 @@ Content-Type: application/json
     "firstname": "Chuck",
     "lastname": "norris",
     "nickname": "toto",
-    "email": "qdqd@tropfort.com",
+    "email": "le_boss@tropfort.com",
     "password": "jackychan",
     "confirm_password": "jackychan"
 }
