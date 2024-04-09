@@ -98,16 +98,22 @@ const memesController = {
           isliked,
         };
       }));
-      // cpretty(memesCompletedWithUser);
       return res.status(200).json(memesCompletedWithUser);
     }
 
-    // cpretty(allMemesWithTagsLikesAndDislikes);
-    // cpretty(allCompleteMemes);
-
-    // cpretty(memesCompleted);
     return res.status(200).json(memesCompleted);
   },
+
+  async uploadMeme(req, res) {
+    const uploadedFile = req.file;
+    const meme = await prisma.meme.create({
+      data: {
+        image_url: uploadedFile.path,
+      },
+    });
+    res.status(200).json({ message: 'Fichier importé avec succès', meme });
+  },
+
 };
 
 export default memesController;
