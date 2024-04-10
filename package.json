@@ -10,7 +10,7 @@
   "scripts": {
     "dev": "node --watch index.js",
     "create:public:upload": "mkdir -p ./public/upload/memes",
-    "start": "npm run create:public:upload && npx prisma generate && npx prisma migrate deploy && node ./data/seed.production.js && node index.js",
+    "start": "npx prisma generate && npx prisma migrate deploy && node index.js",
     "dev:db:create": "psql -f ./data/init_db.sql",
     "dev:db:deploy": "npx prisma migrate deploy",
     "dev:db:seed": "psql -d katsumeme -f ./data/seed.sql",
