@@ -2,7 +2,7 @@ import multer from 'multer';
 
 const memeStorage = multer.diskStorage({
   destination(req, file, cb) {
-    cb(null, './public/upload/memes');
+    cb(null, 'public/upload/memes');
   },
 
   filename(req, file, cb) {
@@ -11,17 +11,16 @@ const memeStorage = multer.diskStorage({
   },
 });
 
-const avatarStorage = multer.diskStorage({
-  destination(req, file, cb) {
-    cb(null, './public/upload/avatars');
-  },
-  filename(req, file, cb) {
-    const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1E9)}`;
-    cb(null, `avatar-${uniqueSuffix}.png`);
-  },
-});
+// const avatarStorage = multer.diskStorage({
+//   destination(req, file, cb) {
+//     cb(null, './public/upload/avatars');
+//   },
+//   filename(req, file, cb) {
+//     const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1E9)}`;
+//     cb(null, `avatar-${uniqueSuffix}.png`);
+//   },
+// });
 
-const memeUpload = multer({ memeStorage });
-const avatarUpload = multer({ avatarStorage });
+const upload = multer({ storage: memeStorage });
 
-export { memeUpload, avatarUpload };
+export default upload;
