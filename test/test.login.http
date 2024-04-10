@@ -22,3 +22,7 @@ Content-Type: application/json
     "password": "jackychan",
     "confirm_password": "jackychan"
 }
+
+### GET test get all memes
+GET {{endpoint}}/memes?limit=5&page=1&user_id=1
+### GET test get all memes with query parameters
