@@ -106,17 +106,25 @@ const memesController = {
 
   async uploadMeme(req, res) {
     const uploadedFile = req.file;
-    const { userId, title, tags } = req.body;
+    const { title, tags } = req.body;
+    const userId = req.user.id;
+
+    // a suppimer juste pour les test avec postman
+    // const tagsArray = tags[0].split(',').map((tag) => tag.trim());
 
     await prisma.meme.create({
       data: {
-        image_url: uploadedFile,
-        author_id: userId,
+        image_url: `/upload/memes/${uploadedFile.filename}`,
+        author_id: Number(userId),
         title,
         tags: {
-          connectOrCreate: tags.map((tag) => ({
-            where: { name: tag },
-            create: { name: tag },
+          create: tags.map((tagName) => ({
+            tags: {
+              connectOrCreate: {
+                where: { name: tagName },
+                create: { name: tagName },
+              },
+            },
           })),
         },
       },
