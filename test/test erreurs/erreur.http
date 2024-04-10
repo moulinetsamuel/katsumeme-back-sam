@@ -7,11 +7,23 @@ Content-Type: application/json
 
 {
     "email": "le_boss@tropfort.com",
-    "password": "jaackychan"
+    "password": "jackychan"
 }
 
 ### GET route protected by JWT /test
 @localStorage = {{login.response.body.accessToken}}
 GET {{endpoint}}/test
 Authorization: Bearer {{localStorage}}
+
+### POST test memes
+@localStorage = {{login.response.body.accessToken}}
+POST {{endpoint}}/memes
+Authorization: Bearer {{localStorage}}
+Content-Type: application/json
+
+{
+    "title": "Meme de test",
+    "tags": ["test1", "test2", "Cute"]
+}
+
 

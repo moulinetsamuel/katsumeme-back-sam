@@ -98,16 +98,40 @@ const memesController = {
           isliked,
         };
       }));
-      // cpretty(memesCompletedWithUser);
       return res.status(200).json(memesCompletedWithUser);
     }
 
-    // cpretty(allMemesWithTagsLikesAndDislikes);
-    // cpretty(allCompleteMemes);
-
-    // cpretty(memesCompleted);
     return res.status(200).json(memesCompleted);
   },
+
+  async uploadMeme(req, res) {
+    const uploadedFile = req.file;
+    const { title, tags } = req.body;
+    const userId = req.user.id;
+
+    // a suppimer juste pour les test avec postman
+    // const tagsArray = tags[0].split(',').map((tag) => tag.trim());
+
+    await prisma.meme.create({
+      data: {
+        image_url: `/upload/memes/${uploadedFile.filename}`,
+        author_id: Number(userId),
+        title,
+        tags: {
+          create: tags.map((tagName) => ({
+            tags: {
+              connectOrCreate: {
+                where: { name: tagName },
+                create: { name: tagName },
+              },
+            },
+          })),
+        },
+      },
+    });
+    res.status(200).json({ message: 'Fichier importé avec succès' });
+  },
+
 };
 
 export default memesController;
