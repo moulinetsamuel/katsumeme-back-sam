@@ -7,5 +7,6 @@ import loginSchema from '../../schemas/auth.schema/post.login.js';
 const router = express.Router();
 
 router.post('/login', zodValidator(loginSchema), tryCatcher(authController.login));
+router.post('/refresh', tryCatcher(authController.refresh));
 
 export default router;
