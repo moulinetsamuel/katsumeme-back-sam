@@ -7,7 +7,7 @@ const toggleController = {
     const memeId = req.params.id;
     const userId = req.user.id;
 
-    const existingLike = await prisma.meme_has_like.findFirst({
+    const existingLike = await prisma.meme_has_like.findUnique({
       where: {
         user_id: userId,
         meme_id: Number(memeId),
