@@ -8,7 +8,7 @@ export default {
     const {
       password, firstname, lastname, nickname, email,
     } = req.body;
-    const hashedPassword = await bcrypt.hash(password, parseInt(process.env.NB_OF_SALT_ROUNDs, 10));
+    const hashedPassword = await bcrypt.hash(password, parseInt(process.env.NB_OF_SALT_ROUNDS, 10));
 
     await prisma.user.create({
       data: {
