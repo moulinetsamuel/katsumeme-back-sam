@@ -8,6 +8,13 @@ export default async (email, password) => {
     where: {
       email,
     },
+    include: {
+      role: {
+        select: {
+          name: true,
+        },
+      },
+    },
   });
 
   if (!user) {
