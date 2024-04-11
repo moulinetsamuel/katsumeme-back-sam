@@ -10,10 +10,19 @@ Content-Type: application/json
     "password": "jackychan"
 }
 
+### POST test refresh token
+@localStorage-refreshToken = {{login.response.body.refreshToken}}
+POST {{endpoint}}/auth/refresh
+Content-Type: application/json
+
+{
+    "refreshToken": "{{localStorage-refreshToken}}"
+}
+
 ### GET route protected by JWT /test
-@localStorage = {{login.response.body.accessToken}}
+@localStorage-accessToken = {{login.response.body.accessToken}}
 GET {{endpoint}}/test
-Authorization: Bearer {{localStorage}}
+Authorization: Bearer {{localStorage-accessToken}}
 
 ### POST test memes
 @localStorage = {{login.response.body.accessToken}}
@@ -26,4 +35,8 @@ Content-Type: application/json
     "tags": ["test1", "test2", "Cute"]
 }
 
+### GET test get currentUser
+@localStorage = {{login.response.body.accessToken}}
+GET {{endpoint}}/profil
+Authorization: Bearer {{localStorage}}
 

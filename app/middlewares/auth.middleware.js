@@ -28,6 +28,13 @@ export default async (req, res, next) => {
       where: {
         id: userId,
       },
+      include: {
+        role: {
+          select: {
+            name: true,
+          },
+        },
+      },
     });
 
     if (!user) {

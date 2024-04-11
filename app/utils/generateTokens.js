@@ -1,12 +1,14 @@
 import jwt from 'jsonwebtoken';
 import { PrismaClient } from '@prisma/client';
+import crypto from 'crypto';
 
 const prisma = new PrismaClient();
 
 export default async (user) => {
+  console.log('user', user);
   const accessToken = jwt.sign(
     {
-      role: user.role,
+      role: user.role.name,
     },
     process.env.JWT_SECRET,
     {
@@ -15,16 +17,7 @@ export default async (user) => {
     },
   );
 
-  const refreshToken = jwt.sign(
-    {
-      role: user.role,
-    },
-    process.env.JWT_REFRESH_SECRET,
-    {
-      expiresIn: process.env.JWT_REFRESH_EXPIRES_IN / 1000,
-      subject: user.id.toString(),
-    },
-  );
+  const refreshToken = crypto.randomBytes(123).toString('base64');
 
   await prisma.refresh_token.create({
     data: {
