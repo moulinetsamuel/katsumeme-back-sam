@@ -1,0 +1,26 @@
+@endpoint=http://localhost:{{$dotenv PORT}}/api
+
+### POST test login
+# @name login
+POST {{endpoint}}/auth/login
+Content-Type: application/json
+
+{
+    "email": "le_boss@tropfort.com",
+    "password": "jackychan"
+}
+
+### GET test toggle like
+@localStorage = {{login.response.body.accessToken}}
+GET {{endpoint}}/toggle/like/meme/1
+Authorization: Bearer {{localStorage}}
+
+### GET test toggle dislike
+@localStorage = {{login.response.body.accessToken}}
+GET {{endpoint}}/toggle/dislike/meme/1
+Authorization: Bearer {{localStorage}}
+
+### GET test toggle bookmark
+@localStorage = {{login.response.body.accessToken}}
+GET {{endpoint}}/toggle/bookmark/meme/1
+Authorization: Bearer {{localStorage}}
