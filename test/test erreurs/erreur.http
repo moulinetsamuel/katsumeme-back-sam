@@ -26,4 +26,8 @@ Content-Type: application/json
     "tags": ["test1", "test2", "Cute"]
 }
 
+### GET test get currentUser
+@localStorage = {{login.response.body.accessToken}}
+GET {{endpoint}}/profil
+Authorization: Bearer {{localStorage}}
 

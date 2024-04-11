@@ -25,4 +25,5 @@ Content-Type: application/json
 
 ### GET test get all memes
 GET {{endpoint}}/memes?limit=5&page=1&user_id=1
-### GET test get all memes with query parameters
+
+
