@@ -1,0 +1,14 @@
+@endpoint=http://localhost:{{$dotenv PORT}}/api
+
+### POST test login
+# @name login
+POST {{endpoint}}/auth/login
+Content-Type: application/json
+
+{
+    "email": "le_boss@tropfort.com",
+    "password": "jackychan"
+}
+
+### GET test get all memes
+GET {{endpoint}}/memes?limit=5&page=1&user_id=1
