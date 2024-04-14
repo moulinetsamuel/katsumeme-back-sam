@@ -10,7 +10,7 @@
   "scripts": {
     "dev": "node --watch index.js",
     "create:public:upload": "mkdir -p ./public/upload/memes",
-    "start": "npx prisma generate && npx prisma migrate deploy && node index.js",
+    "start": "node create:public:upload && npx prisma generate && npx prisma migrate deploy && node index.js",
     "dev:db:create": "psql -f ./data/init_db.sql",
     "dev:db:deploy": "npx prisma migrate deploy",
     "dev:db:seed": "psql -d katsumeme -f ./data/seed.sql",
@@ -41,7 +41,6 @@
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
-    "helmet": "^7.1.0",
     "jsonwebtoken": "^9.0.2",
     "multer": "^1.4.5-lts.1",
     "pg": "^8.11.4",
