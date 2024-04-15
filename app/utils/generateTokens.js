@@ -5,7 +5,6 @@ import crypto from 'crypto';
 const prisma = new PrismaClient();
 
 export default async (user) => {
-  console.log('user', user);
   const accessToken = jwt.sign(
     {
       role: user.role.name,
