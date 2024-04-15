@@ -23,10 +23,6 @@ export default {
   async refresh(req, res) {
     const { refreshToken } = req.body;
 
-    if (!refreshToken) {
-      throw new AuthError('Refresh token is required', 400);
-    }
-
     const oldRefreshToken = await prisma.refresh_token.findUnique({
       where: {
         token: refreshToken,
@@ -49,6 +45,11 @@ export default {
     }
 
     if (oldRefreshToken.expires_at < new Date()) {
+      await prisma.refresh_token.delete({
+        where: {
+          id: oldRefreshToken.id,
+        },
+      });
       throw new AuthError('Refresh token expired', 401);
     }
 
