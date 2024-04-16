@@ -1,0 +1,25 @@
+@endpoint=http://localhost:{{$dotenv PORT}}/api
+# @endpoint=https://katsumeme-8c128449f9bf.herokuapp.com/api
+
+### POST test login
+POST {{endpoint}}/auth/login
+Content-Type: application/json
+
+{
+    "email": "le_boss@tropfort.com",
+    "password": "jackychan"
+}
+
+### POST test create User
+POST {{endpoint}}/users
+Content-Type: application/json
+
+{
+    "firstname": "Chuck",
+    "lastname": "norris",
+    "nickname": "toto",
+    "email": "le_boss@tropfort.com",
+    "password": "jackychan",
+    "confirm_password": "jackychan"
+}
+

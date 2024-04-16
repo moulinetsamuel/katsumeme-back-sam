@@ -1,0 +1,103 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model user {
+  id             Int                 @id @default(autoincrement())
+  firstname      String
+  lastname       String
+  nickname       String              @unique
+  avatar_url     String?
+  email          String              @unique
+  password       String
+  role_id        Int                 @default(2)
+  created_at     DateTime            @default(now()) @db.Timestamptz(6)
+  memes          meme[]
+  comments       meme_has_comment[]
+  like           meme_has_like[]
+  refresh_tokens refresh_token[]
+  role           role                @relation(fields: [role_id], references: [id])
+  bookmarks      user_has_bookmark[]
+}
+
+model role {
+  id         Int      @id @default(autoincrement())
+  name       String   @unique
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+  users      user[]
+}
+
+model tag {
+  id         Int              @id @default(autoincrement())
+  name       String           @unique
+  created_at DateTime         @default(now()) @db.Timestamptz(6)
+  memes      memes_has_tags[]
+}
+
+model meme {
+  id            Int                 @id @default(autoincrement())
+  image_url     String              @unique
+  title         String
+  author_id     Int
+  created_at    DateTime            @default(now()) @db.Timestamptz(6)
+  author        user                @relation(fields: [author_id], references: [id])
+  commented_by  meme_has_comment[]
+  liked_by      meme_has_like[]
+  tags          memes_has_tags[]
+  bookmarked_by user_has_bookmark[]
+}
+
+model meme_has_comment {
+  id         Int      @id @default(autoincrement())
+  comment    String
+  user_id    Int
+  meme_id    Int
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+  memes      meme     @relation(fields: [meme_id], references: [id])
+  users      user     @relation(fields: [user_id], references: [id])
+}
+
+model meme_has_like {
+  like       Boolean
+  user_id    Int
+  meme_id    Int
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+  memes      meme     @relation(fields: [meme_id], references: [id])
+  users      user     @relation(fields: [user_id], references: [id])
+
+  @@id([user_id, meme_id])
+}
+
+model memes_has_tags {
+  tag_id     Int
+  meme_id    Int
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+  memes      meme     @relation(fields: [meme_id], references: [id])
+  tags       tag      @relation(fields: [tag_id], references: [id])
+
+  @@id([tag_id, meme_id])
+}
+
+model user_has_bookmark {
+  user_id    Int
+  meme_id    Int
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+  memes      meme     @relation(fields: [meme_id], references: [id])
+  users      user     @relation(fields: [user_id], references: [id])
+
+  @@id([user_id, meme_id])
+}
+
+model refresh_token {
+  id         Int      @id @default(autoincrement())
+  token      String   @unique
+  expires_at DateTime
+  user_id    Int
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+  user       user     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+}

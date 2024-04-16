@@ -1,0 +1,16 @@
+@endpoint=http://localhost:{{$dotenv PORT}}/api
+
+### POST test login
+# @name login
+POST {{endpoint}}/auth/login
+Content-Type: application/json
+
+{
+    "email": "le_boss@tropfort.com",
+    "password": "jackychan"
+}
+
+### GET test profil info
+@localStorage = {{login.response.body.accessToken}}
+GET {{endpoint}}/profil
+Authorization: Bearer {{localStorage}}

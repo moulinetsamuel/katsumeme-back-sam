@@ -1,0 +1,42 @@
+@endpoint=http://localhost:{{$dotenv PORT}}/api
+
+### POST test login
+# @name login
+POST {{endpoint}}/auth/login
+Content-Type: application/json
+
+{
+    "email": "le_boss@tropfort.com",
+    "password": "jackychan"
+}
+
+### POST test refresh token
+@localStorage-refreshToken = {{login.response.body.refreshToken}}
+POST {{endpoint}}/auth/refresh
+Content-Type: application/json
+
+{
+    "refreshToken": "{{localStorage-refreshToken}}"
+}
+
+### GET route protected by JWT /test
+@localStorage-accessToken = {{login.response.body.accessToken}}
+GET {{endpoint}}/test
+Authorization: Bearer {{localStorage-accessToken}}
+
+### POST test memes
+@localStorage = {{login.response.body.accessToken}}
+POST {{endpoint}}/memes
+Authorization: Bearer {{localStorage}}
+Content-Type: application/json
+
+{
+    "title": "Meme de test",
+    "tags": ["test1", "test2", "Cute"]
+}
+
+### GET test get currentUser
+@localStorage = {{login.response.body.accessToken}}
+GET {{endpoint}}/profil
+Authorization: Bearer {{localStorage}}
+
