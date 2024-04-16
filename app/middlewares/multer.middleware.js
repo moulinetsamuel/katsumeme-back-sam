@@ -2,7 +2,7 @@ import multer from 'multer';
 
 const memeStorage = multer.diskStorage({
   destination(req, file, cb) {
-    cb(null, './app/upload/memes');
+    cb(null, 'public');
   },
 
   filename(req, file, cb) {

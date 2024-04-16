@@ -9,7 +9,7 @@
   },
   "scripts": {
     "dev": "node --watch index.js",
-    "create:public:upload": "mkdir -p ./public/upload/memes",
+    "create:public:upload": "mkdir -p ./public",
     "start": "npx prisma generate && npx prisma migrate deploy && node index.js",
     "dev:db:create": "psql -f ./data/init_db.sql",
     "dev:db:deploy": "npx prisma migrate deploy",
