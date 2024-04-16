@@ -10,14 +10,12 @@
   "scripts": {
     "dev": "node --watch index.js",
     "create:public:upload": "mkdir -p ./public",
-    "start": "npx prisma generate && npx prisma migrate deploy && node index.js",
-    "dev:db:create": "psql -f ./data/init_db.sql",
+    "start": "node index.js",
+    "dev:db:create": "psql -U katsumeme -d katsumeme -f ./data/init_db.sql",
     "dev:db:deploy": "npx prisma migrate deploy",
-    "dev:db:seed": "psql -d katsumeme -f ./data/seed.sql",
-    "dev:upload:reset": "rm -rf ./public/upload/memes/*",
+    "dev:db:seed": "psql -U katsumeme -d katsumeme -f ./data/seed.sql",
     "prisma:generate": "npx prisma generate",
-    "dev:init": "npm run dev:db:create && npm run dev:db:deploy && npm run dev:db:seed && npm run prisma:generate && npm run dev:upload:reset",
-    "deploy": "git checkout dev && git pull && git push heroku dev:main"
+    "dev:init": "npm run dev:db:create && npm run dev:db:deploy && npm run prisma:generate"
   },
   "repository": {
     "type": "git",
