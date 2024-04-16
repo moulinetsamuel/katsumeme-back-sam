@@ -11,9 +11,9 @@
     "dev": "node --watch index.js",
     "create:public:upload": "mkdir -p ./public",
     "start": "node index.js",
-    "dev:db:create": "psql -U katsumeme -d katsumeme -f ./data/init_db.sql",
+    "dev:db:create": "psql -U postgres -d katsumeme -f ./data/init_db.sql",
     "dev:db:deploy": "npx prisma migrate deploy",
-    "dev:db:seed": "psql -U katsumeme -d katsumeme -f ./data/seed.sql",
+    "dev:db:seed": "psql -U postgres -d katsumeme -f ./data/seed.sql",
     "prisma:generate": "npx prisma generate",
     "dev:init": "npm run dev:db:create && npm run dev:db:deploy && npm run prisma:generate"
   },
