@@ -9,7 +9,6 @@
         "sourceType": "module"
     },
     "rules": {
-        "no-console" : "off",
         "import/extensions" :"off",
         "no-underscore-dangle" : "off",
         "max-len": "off",

@@ -9,13 +9,15 @@
   },
   "scripts": {
     "dev": "node --watch index.js",
-    "create:public:upload": "mkdir -p ./public",
+    "create:public:upload": "mkdir -p ./public/upload/memes",
+    "delete:public:upload": "rm -rf ./public/upload/memes",
     "start": "node index.js",
     "dev:db:create": "psql -U postgres -f ./data/init_db.sql",
     "dev:db:deploy": "npx prisma migrate deploy",
     "dev:db:seed": "psql -U postgres -d katsumeme -f ./data/seed.sql",
     "prisma:generate": "npx prisma generate",
-    "dev:init": "npm run dev:db:create && npm run dev:db:deploy && npm run prisma:generate"
+    "dev:init": "npm run dev:db:create && npm run dev:db:deploy && npm run prisma:generate",
+    "prod:reset": "npx prisma migrate reset --force"
   },
   "repository": {
     "type": "git",
@@ -39,6 +41,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
+    "express-rate-limit": "^7.2.0",
     "jsonwebtoken": "^9.0.2",
     "multer": "^1.4.5-lts.1",
     "pg": "^8.11.4",
