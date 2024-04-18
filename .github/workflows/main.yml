@@ -18,7 +18,10 @@ jobs:
         with:
           host: 206.189.125.143
           username: root
-          key: ${{ secrets.DROPLET_SSH_KEY }}
+          key: |
+            -----BEGIN RSA PUBLIC KEY-----
+              ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCn858ewX9BIL0i4SpkMu7Zyy7d9qrqJ9kyVBH4XgSZ/pchwTExWxMXFKb65KbIzaIF1/EOyKWqhSLhc9Y1yTucuNuw2oTpbb704GdJiFYKkyiMtVu/ChBBIGJ60XX7IX5Uan9SdrsCdnFNc/l1hmHjd13BXsGMG0aQv+0iPoOYpGIvJUPih1S9BJIq0H5vaufTLZxtwcz8sob29+FenAbbi0K9WNh25YKSLcnnJMYJdueZELiN1YIs68xD4vdAKDmEbffTpEcIpqvMVFYKFxy9GHY4WPkYuj1MImmiPjGv96hAqm6A69JEFI8132LOZe/Ja3GC2qGd03ZOL05cKDhCJ1FT+T8FbzgcWn/zHHcQHnciEIDVmmOwqhUGikXTndm0nmwQRozY/bbmVArLrlNSkW58Lwo0XqO7tp3SnfOx8b61fFkaKf9JUyqeCnN2zxjEmdyjh9JruAZwrkQX8UjkaUEmDIsecqhrdLM1COCkI4lLOusOnSLWMYrp6cmDMNpSZUQ+IwLxiSSXMUyT9RyHgDIu9k8kaCfH2K+W38OMdagOvnDMfGP3R5CWenqZsmRjX+Zh7faK1Wv/J1WnBlEryMzmv7ZEjm11MdiUUovDzR2c4dkvqWAcCdmAItHsyD0WUodYS5M8sZeDNjgxlkJua3uhS4+Zwt5WZTt1miy9+Q== samyel209@hotmail.fr
+            -----END RSA PUBLIC KEY-----
           script: |
             cd projet-12-katsumeme-back/
             git pull origin main
