@@ -13,9 +13,13 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Install SSH client
-        run: sudo apt update && sudo apt install openssh-client -y
+      - name: SSH into DigitalOcean Droplet and pull changes
+        uses: appleboy/ssh-action@master
+        with:
+          host: 206.189.125.143
+          username: root
+          key: ${{ secrets.DROPLET_SSH_KEY }}
+          script: |
+            cd projet-12-katsumeme-back/
+            git pull origin main
 
-      - name: Deploy to server
-        run: |
-          ssh root@206.189.125.143 'cd projet-12-katsumeme-back/ && git pull'
