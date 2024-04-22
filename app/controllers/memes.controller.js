@@ -1,4 +1,7 @@
 import { PrismaClient } from '@prisma/client';
+import fs from 'fs';
+import path from 'path';
+import { ApiError, AuthError } from '../error/api.error.js';
 
 const prisma = new PrismaClient();
 // const pretty = (obj) => JSON.stringify(obj, null, 2);
@@ -133,25 +136,32 @@ const memesController = {
     const memeId = Number(req.params.id);
     const userId = req.user.id;
 
+    let meme;
     if (req.user.role.name === 'admin') {
-      await prisma.meme.delete({
+      meme = await prisma.meme.findFirst({
         where: {
           id: memeId,
         },
       });
-      return res.status(200).json({ message: 'Mème supprimé avec succès' });
+
+      if (!meme) {
+        throw new ApiError('Ce mème n\'existe pas', 404);
+      }
+    } else {
+      meme = await prisma.meme.findFirst({
+        where: {
+          id: memeId,
+          author_id: userId,
+        },
+      });
+
+      if (!meme) {
+        throw new AuthError('Vous ne pouvez pas supprimer ce mème', 403);
+      }
     }
 
-    const meme = await prisma.meme.findFirst({
-      where: {
-        id: memeId,
-        author_id: userId,
-      },
-    });
-
-    if (!meme) {
-      return res.status(404).json({ message: 'Mème non trouvé' });
-    }
+    const filePath = path.join(process.cwd(), 'public', meme.image_url);
+    fs.unlinkSync(filePath);
 
     await prisma.meme.delete({
       where: {
