@@ -109,9 +109,6 @@ const memesController = {
     const { title, tags } = req.body;
     const userId = req.user.id;
 
-    // a suppimer juste pour les test avec postman
-    // const tagsArray = tags[0].split(',').map((tag) => tag.trim());
-
     await prisma.meme.create({
       data: {
         image_url: `/upload/memes/${uploadedFile.filename}`,
@@ -130,6 +127,39 @@ const memesController = {
       },
     });
     res.status(200).json({ message: 'Fichier importé avec succès' });
+  },
+
+  async deleteMeme(req, res) {
+    const memeId = Number(req.params.id);
+    const userId = req.user.id;
+
+    if (req.user.role.name === 'admin') {
+      await prisma.meme.delete({
+        where: {
+          id: memeId,
+        },
+      });
+      return res.status(200).json({ message: 'Mème supprimé avec succès' });
+    }
+
+    const meme = await prisma.meme.findFirst({
+      where: {
+        id: memeId,
+        author_id: userId,
+      },
+    });
+
+    if (!meme) {
+      return res.status(404).json({ message: 'Mème non trouvé' });
+    }
+
+    await prisma.meme.delete({
+      where: {
+        id: memeId,
+      },
+    });
+
+    return res.status(200).json({ message: 'Mème supprimé avec succès' });
   },
 
 };
