@@ -10,5 +10,6 @@ const router = express.Router();
 
 router.get('/', tryCatcher(memesController.getAll));
 router.post('/', auth, upload.single('meme'), zodValidationSchema(postMemes), tryCatcher(memesController.uploadMeme));
+router.delete('/:id', auth, tryCatcher(memesController.deleteMeme));
 
 export default router;
