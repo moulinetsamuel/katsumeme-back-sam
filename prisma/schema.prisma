@@ -87,7 +87,7 @@ model user_has_bookmark {
   user_id    Int
   meme_id    Int
   created_at DateTime @default(now()) @db.Timestamptz(6)
-  memes      meme     @relation(fields: [meme_id], references: [id])
+  memes      meme     @relation(fields: [meme_id], references: [id], onDelete: Cascade)
   users      user     @relation(fields: [user_id], references: [id])
 
   @@id([user_id, meme_id])
