@@ -8,15 +8,11 @@
     "test": "test"
   },
   "scripts": {
+    "start": "node index.js",
     "dev": "node --watch index.js",
     "create:public:upload": "mkdir -p ./public/upload/memes",
-    "delete:public:upload": "rm -rf ./public/upload/memes",
-    "start": "node index.js",
-    "dev:db:create": "psql -U postgres -f ./data/init_db.sql",
-    "dev:db:deploy": "npx prisma migrate deploy",
-    "dev:db:seed": "psql -U postgres -d katsumeme -f ./data/seed.sql",
+    "prisma:deploy": "npx prisma migrate deploy",
     "prisma:generate": "npx prisma generate",
-    "dev:init": "npm run dev:db:create && npm run dev:db:deploy && npm run prisma:generate",
     "prod:reset": "npx prisma migrate reset --force"
   },
   "repository": {
