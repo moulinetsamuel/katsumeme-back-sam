@@ -33,7 +33,7 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 
-app.use(multer({ limits: { fieldSize: 10 * 1024 * 1024 } }).single('file'));
+app.use(multer({ limits: { fieldSize: 10 * 1024 * 1024, fileSize: 10 * 1024 * 1024 } }).single('file'));
 
 app.use(cors(corsOptions));
 
