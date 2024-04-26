@@ -27,5 +27,5 @@ jobs:
           npm install
           npm run prisma:generate
           npm run prisma:deploy
-          pm2 restart 1
+          pm2 restart 0
           pm2 save
