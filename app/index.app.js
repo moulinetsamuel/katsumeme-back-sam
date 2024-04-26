@@ -3,6 +3,7 @@ import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import rateLimit from 'express-rate-limit';
+import multer from 'multer';
 import router from './routers/index.router.js';
 import errorMiddleware from './middlewares/error.middleware.js';
 import { ApiError } from './error/api.error.js';
@@ -31,6 +32,8 @@ const limiter = rateLimit({
   legacyHeaders: false, // Disable the `X-Ratimit-*` headers
 });
 app.use(limiter);
+
+app.use(multer({ limits: { fieldSize: 10 * 1024 * 1024 } }).single('file'));
 
 app.use(cors(corsOptions));
 
