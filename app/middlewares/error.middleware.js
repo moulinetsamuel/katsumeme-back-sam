@@ -17,7 +17,7 @@ export default (err, req, res, next) => {
       } else if (err.name === 'ZodValidationError') {
         message = { message: err };
       } else {
-        message = { message: 'Je suis pas gérée' };
+        message = { message: err };
       }
       break;
     case '1':
