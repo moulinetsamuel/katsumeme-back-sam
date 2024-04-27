@@ -10,11 +10,11 @@ import { ApiError } from './error/api.error.js';
 
 const app = express();
 
+// Configuration CORS
 const allowedOrigins = process.env.FRONTEND_URL.split(',');
-
 const corsOptions = {
   origin(origin, callback) {
-    if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+    if (allowedOrigins.includes(origin) || !origin) {
       callback(null, true);
     } else {
       const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
@@ -23,26 +23,29 @@ const corsOptions = {
   },
   credentials: true,
 };
+app.use(cors(corsOptions));
 
-// Add rate limit policy
+// Rate Limiting
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 100000, // Limit each IP to 100K requests per `window` (here, per 15 minutes)
-  standardHeaders: true, // Return rate limit info in the `RateLimit-*` headereLs
-  legacyHeaders: false, // Disable the `X-Ratimit-*` headers
+  standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+  legacyHeaders: false, // Disable the `X-RateLimit-*` headers
 });
 app.use(limiter);
 
-app.use(multer({ limits: { fieldSize: 10 * 1024 * 1024, fileSize: 10 * 1024 * 1024 } }).single('file'));
-
-app.use(cookieParser());
-
+// Body Parsing and Cookie Parsing
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
-app.use(cors(corsOptions));
+app.use(cookieParser());
 
+// File Upload Handling
+app.use(multer({ limits: { fieldSize: 10 * 1024 * 1024, fileSize: 10 * 1024 * 1024 } }).single('file'));
+
+// Static Files
 app.use(express.static('public'));
 
+// Router and Error Middleware
 app.use(router);
 app.use(errorMiddleware);
 
