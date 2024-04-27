@@ -35,12 +35,11 @@ app.use(limiter);
 
 app.use(multer({ limits: { fieldSize: 10 * 1024 * 1024, fileSize: 10 * 1024 * 1024 } }).single('file'));
 
-app.use(cors(corsOptions));
-
 app.use(cookieParser());
 
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+app.use(cors(corsOptions));
 
 app.use(express.static('public'));
 
