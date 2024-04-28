@@ -11,7 +11,7 @@ const resizeImg = (req, res, next) => {
     const inputPath = req.file.path;
 
     sharp(inputPath)
-      .resize(500, 500)
+      .resize(500, 500, { fit: 'fill' })
       .toBuffer((err, buffer) => {
         if (err) {
           throw new ApiError('Error resizing image', 400);
