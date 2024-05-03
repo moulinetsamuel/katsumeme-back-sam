@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import fs from 'fs';
 import path from 'path';
+import sharp from 'sharp';
 import { ApiError, AuthError } from '../error/api.error.js';
 
 const prisma = new PrismaClient();
@@ -129,6 +130,20 @@ const memesController = {
         },
       },
     });
+
+    sharp(uploadedFile.path)
+      .resize(500, 500, { fit: 'fill' })
+      .toBuffer((err, buffer) => {
+        if (err) {
+          throw new ApiError('Erreur lors du redimensionnement de l\'image', 400);
+        }
+
+        fs.writeFile(uploadedFile.path, buffer, (writeErr) => {
+          if (writeErr) {
+            throw new ApiError('Erreur lors du remplacement de l\'image', 400);
+          }
+        });
+      });
     res.status(200).json({ message: 'Fichier importé avec succès' });
   },
 
