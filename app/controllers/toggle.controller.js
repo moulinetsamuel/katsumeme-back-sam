@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client';
+import { ApiError } from '../error/api.error.js';
 
 const prisma = new PrismaClient();
 
@@ -7,10 +8,22 @@ const toggleController = {
     const memeId = Number(req.params.id);
     const userId = Number(req.user.id);
 
-    const existingLike = await prisma.meme_has_like.findFirst({
+    const existingMeme = await prisma.meme.findUnique({
       where: {
-        user_id: userId,
-        meme_id: memeId,
+        id: memeId,
+      },
+    });
+
+    if (!existingMeme) {
+      throw new ApiError('Meme not found', 404);
+    }
+
+    const existingLike = await prisma.meme_has_like.findUnique({
+      where: {
+        user_id_meme_id: {
+          user_id: userId,
+          meme_id: memeId,
+        },
       },
     });
 
