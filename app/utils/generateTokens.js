@@ -5,9 +5,11 @@ import crypto from 'crypto';
 const prisma = new PrismaClient();
 
 export default async (user) => {
+  const role = user.role_name || user.role.name;
+
   const accessToken = jwt.sign(
     {
-      role: user.role.name,
+      role,
     },
     process.env.JWT_SECRET,
     {
@@ -25,6 +27,14 @@ export default async (user) => {
       expires_at: new Date(Date.now() + parseInt(process.env.JWT_REFRESH_EXPIRES_IN, 10)),
     },
   });
+
+  // Exemple de requête SQL équivalente pour créer un refresh token
+  // const refreshTokenQuery = `
+  //   INSERT INTO "refresh_token" (token, user_id, expires_at)
+  //   VALUES ($1, $2, $3);
+  // `;
+  // const expiresAt = new Date(Date.now() + parseInt(process.env.JWT_REFRESH_EXPIRES_IN, 10));
+  // await prisma.$queryRawUnsafe(refreshTokenQuery, refreshToken, user.id, expiresAt);
 
   return { accessToken, refreshToken };
 };
