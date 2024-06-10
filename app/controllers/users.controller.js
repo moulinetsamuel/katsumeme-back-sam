@@ -18,8 +18,14 @@ export default {
         email,
         password: hashedPassword,
       },
-
     });
+
+    // Requete SQL equivalente pour créer un utilisateur
+    // const userQuery = `
+    //   INSERT INTO "user" (firstname, lastname, nickname, email, password)
+    //   VALUES ($1, $2, $3, $4, $5);
+    // `;
+    // await prisma.$queryRawUnsafe(userQuery, firstname, lastname, nickname, email, hashedPassword);
 
     res.status(201).json({ message: 'Your account has been created' });
   },
